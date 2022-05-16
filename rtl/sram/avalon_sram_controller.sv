@@ -5,78 +5,84 @@
  * Date Created: 04/19/2022
  * ---------------------------------------------------------------
  * General SRAM controller with avalon inteface
+ *
+ * Note: The address of avalon MM interface is "WORD" address
+ *       instead of "BYTE" address
  * ---------------------------------------------------------------
  */
 
 module avalon_sram_controller #(
-    parameter   SRAM_AW = 18,   // SRAM address width
-    parameter   SRAM_DW = 16,   // SRAM data width
-    parameter   AVS_AW = 19,    // Input bus address
-    parameter   AVS_DW = 16     // Input bus data width
+    parameter SRAM_AW = 18,   // SRAM address width
+    parameter SRAM_DW = 16,   // SRAM data width
+    parameter AVN_AW = 18,    // Input bus address
+    parameter AVN_DW = 16     // Input bus data width
 ) (
     input                   clk,
     input                   reset,
     // Avalon interface bus
-    input                   avs_read,
-    input                   avs_write,
-    input  [AVS_AW-1:0]     avs_address,
-    input  [AVS_DW-1:0]     avs_writedata,
-    input  [AVS_DW/8-1:0]   avs_byteenable,
-    output [AVS_DW-1:0]     avs_readdata,
+    input                   avn_read,
+    input                   avn_write,
+    input  [AVN_AW-1:0]     avn_address,    // NOTE: the address is the word address instead of byte address
+    input  [AVN_DW-1:0]     avn_writedata,
+    input  [AVN_DW/8-1:0]   avn_byteenable,
+    output [AVN_DW-1:0]     avn_readdata,
     // sram interface
     output                  sram_ce_n,
     output                  sram_oe_n,
     output                  sram_we_n,
     output [SRAM_DW/8-1:0]  sram_be_n,
     output [SRAM_AW-1:0]    sram_addr,
-    output [SRAM_DW-1:0]    sram_dq_write,
-    output [SRAM_DW-1:0]    sram_dq_en,
-    input  [SRAM_DW-1:0]    sram_dq_read
+    inout [SRAM_DW-1:0]     sram_dq
 );
 
     // --------------------------------------------
     //  Signal Declaration
     // --------------------------------------------
 
-    reg                   avs_read_s0;
-    reg                   avs_write_s0;
-    reg  [AVS_AW-1:0]     avs_address_s0;
-    reg  [AVS_DW-1:0]     avs_writedata_s0;
-    reg  [AVS_DW/8-1:0]   avs_byteenable_s0;
+    logic [SRAM_DW-1:0]   sram_dq_write;
+    logic                 sram_dq_en;
+
+    reg                   avn_read_s0;
+    reg                   avn_write_s0;
+    reg  [AVN_AW-1:0]     avn_address_s0;
+    reg  [AVN_DW-1:0]     avn_writedata_s0;
+    reg  [AVN_DW/8-1:0]   avn_byteenable_s0;
 
     // --------------------------------------------
     //  main logic
     // --------------------------------------------
 
+    assign sram_dq = sram_dq_en ? sram_dq_write : 'z;
+
     // register the user bus
     always @(posedge clk) begin
         if (reset) begin
-            avs_read_s0 <= 0;
-            avs_write_s0 <= 0;
+            avn_read_s0 <= 0;
+            avn_write_s0 <= 0;
         end
         else begin
-            avs_read_s0 <= avs_read;
-            avs_write_s0 <= avs_write;
+            avn_read_s0 <= avn_read;
+            avn_write_s0 <= avn_write;
         end
     end
 
     always @(posedge clk) begin
-        avs_address_s0 <= avs_address;
-        avs_writedata_s0 <= avs_writedata;
-        avs_byteenable_s0 <= avs_byteenable;
+        avn_address_s0 <= avn_address;
+        avn_writedata_s0 <= avn_writedata;
+        avn_byteenable_s0 <= avn_byteenable;
     end
 
     // drive the sram interface
-    assign sram_addr = avs_address_s0;
-    assign sram_ce_n = ~(avs_read_s0 | avs_write_s0);
-    assign sram_oe_n = ~avs_read_s0;
-    assign sram_we_n = ~avs_write_s0;
-    assign sram_be_n = ~avs_byteenable_s0;
-    assign sram_dq_write = avs_writedata_s0;
-    assign sram_dq_en = avs_write_s0;
+    assign sram_addr = avn_address_s0;
+    assign sram_ce_n = ~(avn_read_s0 | avn_write_s0);
+    assign sram_oe_n = ~avn_read_s0;
+    assign sram_we_n = ~avn_write_s0;
+    assign sram_be_n = ~avn_byteenable_s0;
+    assign sram_dq_write = avn_writedata_s0;
+    assign sram_dq_en = avn_write_s0;
 
     // read data to user bus
-    assign avs_readdata = sram_dq_read;
+    assign avn_readdata = sram_dq;
 
 endmodule
 

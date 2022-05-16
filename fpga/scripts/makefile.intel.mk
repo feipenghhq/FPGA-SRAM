@@ -49,7 +49,7 @@ sof : $(SOF)
 
 
 $(QIP):
-	qsys-generate $(QSYS_DIR)/$(QSYS).qsys --search_path="$(QSYS_SEARCH)"  --family=$(FAMILY)  --part=$(PART) --synthesis=$(QSYS_SYN_LANG) --output-directory=$(OUT_DIR)/$(QSYS) --clear-output-directory
+	qsys-generate $(QSYS_DIR)/$(QSYS).qsys --search-path="$(QSYS_SEARCH)"  --family=$(FAMILY)  --part=$(PART) --synthesis=$(QSYS_SYN_LANG) --output-directory=$(OUT_DIR)/$(QSYS) --clear-output-directory
 
 $(SOF): $(QIP)
 	cd $(OUT_DIR) && quartus_sh --64bit -t $(SCRIPT_DIR)/build.tcl

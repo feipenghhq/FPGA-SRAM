@@ -241,12 +241,6 @@ module de2_top (
     // SRAM
 
     logic [1:0]     sram_be_n;
-	logic [15:0]    sram_dq_read;
-	logic [15:0]    sram_dq_write;
-	logic           sram_dq_en;
-
-    assign sram_dq_read = SRAM_DQ;
-    assign SRAM_DQ = sram_dq_en ? sram_dq_write : 16'bz;
     assign SRAM_LB_N = sram_be_n[0];
     assign SRAM_UB_N = sram_be_n[1];
 
@@ -257,9 +251,7 @@ module de2_top (
     de2 sopc (
             .clk_clk            (CLOCK_50), //      clk.clk
             .sram_addr          (SRAM_ADDR),            //      sram.ADDR
-		    .sram_dq_read       (sram_dq_read),         //       .DQ_read
-		    .sram_dq_write      (sram_dq_write),        //       .DQ_write
-		    .sram_dq_en         (sram_dq_en),           //       .DQ_writeEnable
+		    .sram_dq            (SRAM_DQ),              //       .DQ
 		    .sram_ce_n          (SRAM_CE_N),            //       .CEn
 		    .sram_oe_n          (SRAM_OE_N),            //       .OEn
 		    .sram_we_n          (SRAM_WE_N),            //       .WEn

@@ -21,3 +21,12 @@ quartus
 # software
 app
 bsp
+
+# cocotb
+sim_build
+results.xml
+__pycache__
+*.vcd
+*.fst
+*.fst.hier
+*.gtkw
