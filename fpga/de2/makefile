@@ -3,19 +3,23 @@
 # Makefile for project
 #########################################################
 
+# Common variable
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
-OUT_DIR  = $(shell pwd)/quartus
 PWD		 = $(shell pwd)
+OUT_DIR  = $(PWD)/quartus
 
-PROJECT  = de2
-QSYS 	 = de2
-TOP		 = de2_top
+#########################################################
+# Project specific variable
+#########################################################
 
-VERILOG  += $(PWD)/src/de2_top.sv
-SDC	     += $(PWD)/src/de2.sdc
-PIN      += $(PWD)/src/DE2_pin_assignment.tcl
+PROJECT = de2
+TOP = de2_top
+SDC	= $(PWD)/src/de2.sdc
+PIN = $(PWD)/src/de2_pin.tcl
+QSYS = de2
+QSYS_DIR = $(PWD)/src
+QSYS_SEARCH = $(GIT_ROOT)/rtl/sram
 
-QSYS_DIR 	= $(PWD)/src
-QSYS_SEARCH = $(GIT_ROOT)/src/sram/*/**
+VERILOG += $(PWD)/src/de2_top.sv
 
-include $(GIT_ROOT)/fpga/scripts/makefile.intel.mk
+include $(GIT_ROOT)/tools/quartus/makefile.qsys.mk

@@ -12,27 +12,27 @@
    element $${FILENAME}
    {
    }
-   element jtag_uart_0.avalon_jtag_slave
+   element jtag_uart.avalon_jtag_slave
    {
       datum baseAddress
       {
-         value = "2101256";
+         value = "1052680";
          type = "String";
       }
    }
-   element avalon_sram_controller_0
+   element avalon_sram_controller
    {
       datum _sortIndex
       {
-         value = "2";
+         value = "3";
          type = "int";
       }
    }
-   element avalon_sram_controller_0.avs
+   element avalon_sram_controller.avn
    {
       datum baseAddress
       {
-         value = "1048576";
+         value = "524288";
          type = "String";
       }
    }
@@ -56,15 +56,15 @@
    {
       datum baseAddress
       {
-         value = "2099200";
+         value = "1050624";
          type = "String";
       }
    }
-   element jtag_uart_0
+   element jtag_uart
    {
       datum _sortIndex
       {
-         value = "3";
+         value = "2";
          type = "int";
       }
    }
@@ -83,13 +83,13 @@
  <parameter name="projectName" value="" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="1" />
- <parameter name="timeStamp" value="1652661918755" />
+ <parameter name="timeStamp" value="1655160373189" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
  <interface name="clk" internal="clk.clk_in" type="clock" dir="end" />
  <interface
    name="sram"
-   internal="avalon_sram_controller_0.sram"
+   internal="avalon_sram_controller.sram"
    type="conduit"
    dir="end" />
  <module kind="clock_source" version="13.0" enabled="1" name="clk">
@@ -152,9 +152,9 @@
   <parameter name="cpuID_stored" value="0" />
   <parameter name="breakOffset" value="32" />
   <parameter name="userDefinedSettings" value="" />
-  <parameter name="resetSlave">avalon_sram_controller_0.avs</parameter>
+  <parameter name="resetSlave">avalon_sram_controller.avn</parameter>
   <parameter name="mmu_TLBMissExcSlave" value="None" />
-  <parameter name="exceptionSlave">avalon_sram_controller_0.avs</parameter>
+  <parameter name="exceptionSlave">avalon_sram_controller.avn</parameter>
   <parameter name="breakSlave">cpu.jtag_debug_module</parameter>
   <parameter name="setting_perfCounterWidth" value="32" />
   <parameter name="setting_interruptControllerType" value="Internal" />
@@ -189,8 +189,8 @@
   <parameter name="ocimem_ramBlockType" value="Automatic" />
   <parameter name="mmu_ramBlockType" value="Automatic" />
   <parameter name="bht_ramBlockType" value="Automatic" />
-  <parameter name="instAddrWidth" value="22" />
-  <parameter name="dataAddrWidth" value="22" />
+  <parameter name="instAddrWidth" value="21" />
+  <parameter name="dataAddrWidth" value="21" />
   <parameter name="tightlyCoupledDataMaster0AddrWidth" value="1" />
   <parameter name="tightlyCoupledDataMaster1AddrWidth" value="1" />
   <parameter name="tightlyCoupledDataMaster2AddrWidth" value="1" />
@@ -199,8 +199,8 @@
   <parameter name="tightlyCoupledInstructionMaster1AddrWidth" value="1" />
   <parameter name="tightlyCoupledInstructionMaster2AddrWidth" value="1" />
   <parameter name="tightlyCoupledInstructionMaster3AddrWidth" value="1" />
-  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='avalon_sram_controller_0.avs' start='0x100000' end='0x200000' /><slave name='cpu.jtag_debug_module' start='0x200800' end='0x201000' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x201008' end='0x201010' /></address-map>]]></parameter>
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='avalon_sram_controller_0.avs' start='0x100000' end='0x200000' /><slave name='cpu.jtag_debug_module' start='0x200800' end='0x201000' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x201008' end='0x201010' /></address-map>]]></parameter>
+  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='avalon_sram_controller.avn' start='0x80000' end='0x100000' /><slave name='cpu.jtag_debug_module' start='0x100800' end='0x101000' /><slave name='jtag_uart.avalon_jtag_slave' start='0x101008' end='0x101010' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='avalon_sram_controller.avn' start='0x80000' end='0x100000' /><slave name='cpu.jtag_debug_module' start='0x100800' end='0x101000' /><slave name='jtag_uart.avalon_jtag_slave' start='0x101008' end='0x101010' /></address-map>]]></parameter>
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="deviceFamilyName" value="Cyclone IV GX" />
   <parameter name="internalIrqMaskSystemInfo" value="1" />
@@ -216,21 +216,10 @@
   <parameter name="tightlyCoupledInstructionMaster3MapParam" value="" />
  </module>
  <module
-   kind="avalon_sram_controller"
-   version="1.0"
-   enabled="1"
-   name="avalon_sram_controller_0">
-  <parameter name="SRAM_AW" value="18" />
-  <parameter name="SRAM_DW" value="16" />
-  <parameter name="AVN_AW" value="19" />
-  <parameter name="AVN_DW" value="16" />
-  <parameter name="AUTO_CLOCK_CLOCK_RATE" value="50000000" />
- </module>
- <module
    kind="altera_avalon_jtag_uart"
    version="13.0.1.99.2"
    enabled="1"
-   name="jtag_uart_0">
+   name="jtag_uart">
   <parameter name="allowMultipleConnections" value="false" />
   <parameter name="hubInstanceID" value="0" />
   <parameter name="readBufferDepth" value="64" />
@@ -244,13 +233,22 @@
   <parameter name="writeIRQThreshold" value="8" />
   <parameter name="avalonSpec" value="2.0" />
  </module>
+ <module
+   kind="avalon_sram_controller"
+   version="1.0"
+   enabled="1"
+   name="avalon_sram_controller">
+  <parameter name="AVN_AW" value="18" />
+  <parameter name="AVN_DW" value="16" />
+  <parameter name="AUTO_CLOCK_CLOCK_RATE" value="50000000" />
+ </module>
  <connection
    kind="avalon"
    version="13.0"
    start="cpu.instruction_master"
    end="cpu.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00200800" />
+  <parameter name="baseAddress" value="0x00100800" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -259,7 +257,7 @@
    start="cpu.data_master"
    end="cpu.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00200800" />
+  <parameter name="baseAddress" value="0x00100800" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -269,64 +267,60 @@
    end="clk.clk_in_reset" />
  <connection kind="reset" version="13.0" start="clk.clk_reset" end="cpu.reset_n" />
  <connection kind="clock" version="13.0" start="clk.clk" end="cpu.clk" />
+ <connection kind="clock" version="13.0" start="clk.clk" end="jtag_uart.clk" />
+ <connection
+   kind="reset"
+   version="13.0"
+   start="clk.clk_reset"
+   end="jtag_uart.reset" />
+ <connection
+   kind="avalon"
+   version="13.0"
+   start="cpu.data_master"
+   end="jtag_uart.avalon_jtag_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00101008" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="13.0"
+   start="cpu.instruction_master"
+   end="jtag_uart.avalon_jtag_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00101008" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection kind="interrupt" version="13.0" start="cpu.d_irq" end="jtag_uart.irq">
+  <parameter name="irqNumber" value="0" />
+ </connection>
  <connection
    kind="clock"
    version="13.0"
    start="clk.clk"
-   end="avalon_sram_controller_0.clock" />
+   end="avalon_sram_controller.clock" />
  <connection
    kind="reset"
    version="13.0"
    start="clk.clk_reset"
-   end="avalon_sram_controller_0.reset" />
+   end="avalon_sram_controller.reset" />
  <connection
    kind="avalon"
    version="13.0"
    start="cpu.data_master"
-   end="avalon_sram_controller_0.avs">
+   end="avalon_sram_controller.avn">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00100000" />
+  <parameter name="baseAddress" value="0x00080000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon"
    version="13.0"
    start="cpu.instruction_master"
-   end="avalon_sram_controller_0.avs">
+   end="avalon_sram_controller.avn">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00100000" />
+  <parameter name="baseAddress" value="0x00080000" />
   <parameter name="defaultConnection" value="false" />
- </connection>
- <connection kind="clock" version="13.0" start="clk.clk" end="jtag_uart_0.clk" />
- <connection
-   kind="reset"
-   version="13.0"
-   start="clk.clk_reset"
-   end="jtag_uart_0.reset" />
- <connection
-   kind="avalon"
-   version="13.0"
-   start="cpu.data_master"
-   end="jtag_uart_0.avalon_jtag_slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00201008" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="13.0"
-   start="cpu.instruction_master"
-   end="jtag_uart_0.avalon_jtag_slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00201008" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="interrupt"
-   version="13.0"
-   start="cpu.d_irq"
-   end="jtag_uart_0.irq">
-  <parameter name="irqNumber" value="0" />
  </connection>
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />
